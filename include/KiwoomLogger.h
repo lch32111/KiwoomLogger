@@ -1,100 +1,19 @@
+
+// KiwoomLogger.h : main header file for the PROJECT_NAME application
+//
+
 #pragma once
-#ifndef __KW_WRAPPER_HPP__
-#define __KW_WRAPPER_HPP__
 
-#include "KLVersion.h"
-#include "KW_Resource.h"
-
-
-#ifndef _SECURE_ATL
-#define _SECURE_ATL 1
+#ifndef __AFXWIN_H__
+	#error "include 'stdafx.h' before including this file for PCH"
 #endif
 
-// stdafx.h : 자주 사용하지만 자주 변경되지는 않는
-// 표준 시스템 포함 파일 및 프로젝트 관련 포함 파일이 
-// 들어 있는 포함 파일입니다.
-#ifndef VC_EXTRALEAN
-#define VC_EXTRALEAN            // 거의 사용되지 않는 내용은 Windows 헤더에서 제외합니다.
-#endif
+#include "resource.h"		// main symbols
 
-// 포함 SDKDDKVer.h는 사용 가능한 Windows 플랫폼 중 버전이 가장 높은 플랫폼을 정의합니다.
-
-// 이전 Windows 플랫폼에 대해 응용 프로그램을 빌드하려는 경우에는 SDKDDKVer.h를 포함하기 전에
-// WinSDKVer.h를 포함하고 _WIN32_WINNT 매크로를 지원하려는 플랫폼으로 설정하십시오.
-
-#include <SDKDDKVer.h>
-
-#define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS      // 일부 CString 생성자는 명시적으로 선언됩니다.
-
-// MFC의 공통 부분과 무시 가능한 경고 메시지에 대한 숨기기를 해제합니다.
-#define _AFX_ALL_WARNINGS
-
-#include <afxwin.h>         // MFC 핵심 및 표준 구성 요소입니다.
-#include <afxext.h>         // MFC 확장입니다.
-
-
-#include <afxdisp.h>        // MFC 자동화 클래스입니다.
-
-#ifndef _AFX_NO_OLE_SUPPORT
-#include <afxdtctl.h>           // Internet Explorer 4 공용 컨트롤에 대한 MFC 지원입니다.
-#endif
-#ifndef _AFX_NO_AFXCMN_SUPPORT
-#include <afxcmn.h>             // Windows 공용 컨트롤에 대한 MFC 지원입니다.
-#endif // _AFX_NO_AFXCMN_SUPPORT
-
-#include <afxcontrolbars.h>     // MFC의 리본 및 컨트롤 막대 지원
-#include <afxdisp.h>
-#include <afxdisp.h>
-#include <afxdisp.h>
-#include <afxdisp.h>
-
-#ifdef _UNICODE
-#if defined _M_IX86
-#pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='x86' publicKeyToken='6595b64144ccf1df' language='*'\"")
-#elif defined _M_X64
-#pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='amd64' publicKeyToken='6595b64144ccf1df' language='*'\"")
-#else
-#pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
-#endif
-#endif
-
-#define OP_ERR_SISE_OVERFLOW	-200			//"시세조회 과부하"
-#define OP_ERR_RQ_STRUCT_FAIL	-201			//"REQUEST_INPUT_st Failed"
-#define OP_ERR_RQ_STRING_FAIL	-202			//"요청 전문 작성 실패"
-#define OP_ERR_NO_DATA			-203			//"데이터가 존재하지 않습니다."
-#define OP_ERR_OVER_MAX_DATA	-204			//"한번에 조회 가능한 종목개수는 최대 100종목 입니다."
-
-
-#define OP_ERR_ORD_WRONG_INPUT	-300			//"입력값 오류"
-#define OP_ERR_ORD_WRONG_ACCNO	-301			//"계좌비밀번호를 입력하십시오."
-#define OP_ERR_OTHER_ACC_USE	-302			//"타인계좌는 사용할 수 없습니다."
-#define OP_ERR_MIS_2BILL_EXC	-303			//"주문가격이 20억원을 초과합니다."
-#define OP_ERR_MIS_5BILL_EXC	-304			//"주문가격이 50억원을 초과합니다."
-#define OP_ERR_MIS_1PER_EXC		-305			//"주문수량이 총발행주수의 1%를 초과합니다."
-#define OP_ERR_MIS_3PER_EXC		-306			//"주문수량은 총발행주수의 3%를 초과할 수 없습니다."
-#define OP_ERR_SEND_FAIL		-307			//"주문전송실패"
-#define OP_ERR_ORD_OVERFLOW		-308			//"주문전송 과부하"
-
-#define UM_SCRENN_CLOSE		1000
-
-#define TR_OPT10001		"OPT10001"
-#define TR_OPT10003		"OPT10003"
-#define TR_OPT10004		"OPT10004"
-#define TR_OPT10080		"OPT10080"
-#define TR_OPT10081		"OPT10081"
-
-#define DT_NONE			0		// 기본문자 형식
-#define DT_DATE			1		// 일자 형식
-#define DT_TIME			2		// 시간 형식
-#define DT_NUMBER		3		// 콤파 숫자 형식
-#define DT_ZERO_NUMBER	4		// 콤파 숫자(0표시) 형식
-#define DT_SIGN			5		// 대비기호 형식
-
-
-class KW_ActiveXWrapper : public CWnd
+class CKHOpenAPI : public CWnd
 {
 protected:
-	DECLARE_DYNCREATE(KW_ActiveXWrapper)
+	DECLARE_DYNCREATE(CKHOpenAPI)
 public:
 	CLSID const& GetClsid()
 	{
@@ -509,66 +428,20 @@ public:
 	}
 };
 
-
-// CKhOpenApiTestDlg 대화 상자
-class KW_OpenAPIDlg : public CDialogEx
-{
-	// 생성입니다.
-public:
-	KW_OpenAPIDlg(CWnd* pParent = NULL);	// 표준 생성자입니다.
-
-// 대화 상자 데이터입니다.
-	enum { IDD = IDD_KHOPENAPITEST_DLG };
-
-protected:
-	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV 지원입니다.
-
-public:
-	CMapStringToPtr m_mapScreen;
-
-	int m_nScrN0;
-	CMapStringToString m_mapScreenNum;
-	BOOL GetNextScreenNum(int nScreenType);
-	long		m_nRet;
-
-	CWnd *m_pRealAddDlg;
-protected:
-
-	// 구현입니다.
-protected:
-	HICON m_hIcon;
-
-	// 생성된 메시지 맵 함수
-	virtual BOOL OnInitDialog();
-	afx_msg void OnPaint();
-	afx_msg void OnDestroy();
-	afx_msg HCURSOR OnQueryDragIcon();
-	afx_msg LRESULT OnScreenClose(WPARAM wParam, LPARAM lParam);
-	DECLARE_MESSAGE_MAP()
-	void OnReceiveTrDataKhopenapictrl(LPCTSTR sScrNo, LPCTSTR sRQName, LPCTSTR sTrcode, LPCTSTR sRecordName, LPCTSTR sPrevNext, long nDataLength, LPCTSTR sErrorCode, LPCTSTR sMessage, LPCTSTR sSplmMsg);
-	void OnReceiveRealDataKhopenapictrl(LPCTSTR sJongmokCode, LPCTSTR sRealType, LPCTSTR sRealData);
-	void OnReceiveMsgKhopenapictrl(LPCTSTR sScrNo, LPCTSTR sRQName, LPCTSTR sTrCode, LPCTSTR sMsg);
-	void OnReceiveChejanData(LPCTSTR sGubun, LONG nItemCnt, LPCTSTR sFidList);
-	void OnEventConnect(LONG nItemCnt);
-	void OnReceiveRealCondition(LPCTSTR strCode, LPCTSTR strType, LPCTSTR strConditionName, LPCTSTR strConditionIndex);			//조건검색 실시간 삽입,삭제되는 종목을 받는다
-	void OnReceiveTrCondition(LPCTSTR sScrNo, LPCTSTR strCodeList, LPCTSTR strConditionName, int nIndex, int nNext);	//조건검색 종목리스트를 받는다.
-	void OnReceiveConditionVer(long lRet, LPCTSTR sMsg);
-	DECLARE_EVENTSINK_MAP()
-};
-
-class KW_OpenAPIContext : public CWinApp
+class KiwoomLoggerApp : public CWinApp
 {
 public:
-	KW_OpenAPIContext();
+	KiwoomLoggerApp();
+
+	CKHOpenAPI m_khOpenApi;
+
+// Overrides
+public:
 	virtual BOOL InitInstance();
-	CString ConvertDataFormat(int nType, LPCTSTR szData, LPCTSTR szBeforeData = "", LPCTSTR szAfterData = "");
-	BOOL IsError(long lErrCode);		// 오류 여부
-public:
-	KW_ActiveXWrapper	m_khOpenApi;
-	CString	m_sAppPath;
+
+// Implementation
+
 	DECLARE_MESSAGE_MAP()
 };
 
-extern KW_OpenAPIContext kw_openAPIContext;
-
-#endif
+extern KiwoomLoggerApp theApp;
