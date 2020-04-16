@@ -1,42 +1,25 @@
-
-// KiwoomLogger.cpp : Defines the class behaviors for the application.
-//
-
 #include "stdafx.h"
-#include "KiwoomLogger.h"
-#include "KiwoomLoggerDlg.h"
+#include "KiwoomLogger.hpp"
+
+#include "KW_OpenAPI.hpp"
+#include "KiwoomLoggerDlg.hpp"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
-IMPLEMENT_DYNCREATE(CKHOpenAPI, CWnd)
-
-// KiwoomLoggerApp
-
 BEGIN_MESSAGE_MAP(KiwoomLoggerApp, CWinApp)
 	ON_COMMAND(ID_HELP, &CWinApp::OnHelp)
 END_MESSAGE_MAP()
-
-
-// KiwoomLoggerApp construction
 
 KiwoomLoggerApp::KiwoomLoggerApp()
 {
 	// support Restart Manager
 	m_dwRestartManagerSupportFlags = AFX_RESTART_MANAGER_SUPPORT_RESTART;
-
-	// TODO: add construction code here,
-	// Place all significant initialization in InitInstance
 }
 
-
 // The one and only KiwoomLoggerApp object
-
 KiwoomLoggerApp theApp;
-
-
-// KiwoomLoggerApp initialization
 
 BOOL KiwoomLoggerApp::InitInstance()
 {

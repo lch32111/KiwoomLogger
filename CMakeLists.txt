@@ -17,8 +17,9 @@ configure_file (
 
 set (header_file
 	include/KLVersion.h
-	include/KiwoomLogger.h
-	include/KiwoomLoggerDlg.h
+	include/KW_OpenAPI.hpp
+	include/KiwoomLogger.hpp
+	include/KiwoomLoggerDlg.hpp
 	include/stdafx.h
 	include/targetver.h
      )
@@ -26,6 +27,7 @@ set (header_file
 
 set (source_file
 	src/stdafx.cpp
+	src/KW_OpenAPI.cpp
 	src/KiwoomLogger.cpp
 	src/KiwoomLoggerDlg.cpp
     )

@@ -1,15 +1,13 @@
-
-// KiwoomLoggerDlg.cpp : implementation file
-//
-#include "stdafx.h"
-#include "KiwoomLogger.h"
-#include "KiwoomLoggerDlg.h"
-#include "afxdialogex.h"
+#include "KiwoomLoggerDlg.hpp"
+#include "KiwoomLogger.hpp"
+#include "resource.h"
+#include "KLVersion.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
+#define KWAPI theApp.m_kwOpenAPI
 
 // CAboutDlg dialog used for App About
 
@@ -38,15 +36,22 @@ CAboutDlg::CAboutDlg() : CDialogEx(IDD_ABOUTBOX)
 void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_KHOPENAPICTRL1, theApp.m_khOpenApi);
+	DDX_Control(pDX, IDC_KHOPENAPICTRL1, KWAPI);
 }
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
 END_MESSAGE_MAP()
 
-
-// CKiwoomLoggerDlg dialog
-
+BEGIN_EVENTSINK_MAP(CKiwoomLoggerDlg, CDialogEx)
+	ON_EVENT(CKiwoomLoggerDlg, IDC_KHOPENAPICTRL1, 1, OnReceiveTrDataKhopenapictrl, VTS_BSTR VTS_BSTR VTS_BSTR VTS_BSTR VTS_BSTR VTS_I4 VTS_BSTR VTS_BSTR VTS_BSTR)
+	ON_EVENT(CKiwoomLoggerDlg, IDC_KHOPENAPICTRL1, 2, OnReceiveRealDataKhopenapictrl, VTS_BSTR VTS_BSTR VTS_BSTR)
+	ON_EVENT(CKiwoomLoggerDlg, IDC_KHOPENAPICTRL1, 3, OnReceiveMsgKhopenapictrl, VTS_BSTR VTS_BSTR VTS_BSTR VTS_BSTR)
+	ON_EVENT(CKiwoomLoggerDlg, IDC_KHOPENAPICTRL1, 4, OnReceiveChejanData, VTS_BSTR VTS_I4 VTS_BSTR)
+	ON_EVENT(CKiwoomLoggerDlg, IDC_KHOPENAPICTRL1, 5, OnEventConnect, VTS_I4)
+	ON_EVENT(CKiwoomLoggerDlg, IDC_KHOPENAPICTRL1, 7, OnReceiveRealCondition, VTS_BSTR VTS_BSTR VTS_BSTR VTS_BSTR)
+	ON_EVENT(CKiwoomLoggerDlg, IDC_KHOPENAPICTRL1, 8, OnReceiveTrCondition, VTS_BSTR VTS_BSTR VTS_BSTR VTS_I2 VTS_I2)
+	ON_EVENT(CKiwoomLoggerDlg, IDC_KHOPENAPICTRL1, 9, OnReceiveConditionVer, VTS_I4 VTS_BSTR)
+END_EVENTSINK_MAP()
 
 
 CKiwoomLoggerDlg::CKiwoomLoggerDlg(CWnd* pParent /*=nullptr*/)
@@ -58,7 +63,7 @@ CKiwoomLoggerDlg::CKiwoomLoggerDlg(CWnd* pParent /*=nullptr*/)
 void CKiwoomLoggerDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_KHOPENAPICTRL1, theApp.m_khOpenApi);
+	DDX_Control(pDX, IDC_KHOPENAPICTRL1, KWAPI);
 }
 
 BEGIN_MESSAGE_MAP(CKiwoomLoggerDlg, CDialogEx)
@@ -67,8 +72,6 @@ BEGIN_MESSAGE_MAP(CKiwoomLoggerDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 END_MESSAGE_MAP()
 
-
-// CKiwoomLoggerDlg message handlers
 
 BOOL CKiwoomLoggerDlg::OnInitDialog()
 {
@@ -99,12 +102,12 @@ BOOL CKiwoomLoggerDlg::OnInitDialog()
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
-	// ShowWindow(SW_MAXIMIZE);
-	// ShowWindow(SW_MINIMIZE);
+	CString	strTitle;
+	strTitle.Format(_T("Kiwoom Logger %d.%d.%d"), KL_VERSION_MAJOR, KL_VERSION_MINOR, KL_VERSION_PATCH);
+	SetWindowText(strTitle);
 
-	theApp.m_khOpenApi.CommConnect();
+	KWAPI.CommConnect();
 
-	// TODO: Add extra initialization here
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -158,3 +161,51 @@ HCURSOR CKiwoomLoggerDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+void CKiwoomLoggerDlg::OnReceiveTrDataKhopenapictrl(LPCTSTR sScrNo, LPCTSTR sRQName, LPCTSTR sTrcode, LPCTSTR sRecordName, LPCTSTR sPrevNext, long nDataLength, LPCTSTR sErrorCode, LPCTSTR sMessage, LPCTSTR sSplmMsg)
+{
+	if (!KWAPI.GetSafeHwnd()) return;
+}
+
+void CKiwoomLoggerDlg::OnReceiveMsgKhopenapictrl(LPCTSTR sScrNo, LPCTSTR sRQName, LPCTSTR sTrCode, LPCTSTR sMsg)
+{
+	if (!KWAPI.GetSafeHwnd()) return;
+}
+
+void CKiwoomLoggerDlg::OnReceiveRealDataKhopenapictrl(LPCTSTR sJongmokCode, LPCTSTR sRealType, LPCTSTR sRealData)
+{
+	if (!KWAPI.GetSafeHwnd()) return;
+}
+
+void CKiwoomLoggerDlg::OnReceiveChejanData(LPCTSTR sGubun, LONG nItemCnt, LPCTSTR sFidList)
+{
+	if (!KWAPI.GetSafeHwnd()) return;
+}
+
+void CKiwoomLoggerDlg::OnReceiveRealCondition(LPCTSTR strCode, LPCTSTR strType, LPCTSTR strConditionName, LPCTSTR strConditionIndex)
+{
+	if (!KWAPI.GetSafeHwnd()) return;
+}
+
+void CKiwoomLoggerDlg::OnReceiveTrCondition(LPCTSTR sScrNo, LPCTSTR strCodeList, LPCTSTR strConditionName, int nIndex, int nNext)
+{
+	if (!KWAPI.GetSafeHwnd()) return;
+}
+
+void CKiwoomLoggerDlg::OnReceiveConditionVer(long lRet, LPCTSTR sMsg)
+{
+	if (!KWAPI.GetSafeHwnd()) return;
+}
+
+void CKiwoomLoggerDlg::OnEventConnect(LONG nItemCnt)
+{
+	if (nItemCnt == 0)
+	{
+		// 立加 沥惑贸府
+
+	}
+	else
+	{
+		// 立加 厚沥惑 贸府
+		EndDialog(IDCANCEL);
+	}
+}
