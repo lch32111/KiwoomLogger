@@ -1,15 +1,14 @@
 
-// KiwoomLogger.h : main header file for the PROJECT_NAME application
-//
-
 #pragma once
+#ifndef __KIWOOM_LOGGER_HPP__
+#define __KIWOOM_LOGGER_HPP__
 
 #ifndef __AFXWIN_H__
 	#error "include 'stdafx.h' before including this file for PCH"
 #endif
 
 #include "KW_OpenAPI.hpp"
-#include "resource.h"		// main symbols
+#include "resource.h"
 
 class KiwoomLoggerApp : public CWinApp
 {
@@ -24,3 +23,4 @@ public:
 };
 
 extern KiwoomLoggerApp theApp;
+#endif

@@ -42,38 +42,38 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
 END_MESSAGE_MAP()
 
-BEGIN_EVENTSINK_MAP(CKiwoomLoggerDlg, CDialogEx)
-	ON_EVENT(CKiwoomLoggerDlg, IDC_KHOPENAPICTRL1, 1, OnReceiveTrDataKhopenapictrl, VTS_BSTR VTS_BSTR VTS_BSTR VTS_BSTR VTS_BSTR VTS_I4 VTS_BSTR VTS_BSTR VTS_BSTR)
-	ON_EVENT(CKiwoomLoggerDlg, IDC_KHOPENAPICTRL1, 2, OnReceiveRealDataKhopenapictrl, VTS_BSTR VTS_BSTR VTS_BSTR)
-	ON_EVENT(CKiwoomLoggerDlg, IDC_KHOPENAPICTRL1, 3, OnReceiveMsgKhopenapictrl, VTS_BSTR VTS_BSTR VTS_BSTR VTS_BSTR)
-	ON_EVENT(CKiwoomLoggerDlg, IDC_KHOPENAPICTRL1, 4, OnReceiveChejanData, VTS_BSTR VTS_I4 VTS_BSTR)
-	ON_EVENT(CKiwoomLoggerDlg, IDC_KHOPENAPICTRL1, 5, OnEventConnect, VTS_I4)
-	ON_EVENT(CKiwoomLoggerDlg, IDC_KHOPENAPICTRL1, 7, OnReceiveRealCondition, VTS_BSTR VTS_BSTR VTS_BSTR VTS_BSTR)
-	ON_EVENT(CKiwoomLoggerDlg, IDC_KHOPENAPICTRL1, 8, OnReceiveTrCondition, VTS_BSTR VTS_BSTR VTS_BSTR VTS_I2 VTS_I2)
-	ON_EVENT(CKiwoomLoggerDlg, IDC_KHOPENAPICTRL1, 9, OnReceiveConditionVer, VTS_I4 VTS_BSTR)
+BEGIN_EVENTSINK_MAP(KiwoomLoggerDlg, CDialogEx)
+	ON_EVENT(KiwoomLoggerDlg, IDC_KHOPENAPICTRL1, 1, OnReceiveTrDataKhopenapictrl, VTS_BSTR VTS_BSTR VTS_BSTR VTS_BSTR VTS_BSTR VTS_I4 VTS_BSTR VTS_BSTR VTS_BSTR)
+	ON_EVENT(KiwoomLoggerDlg, IDC_KHOPENAPICTRL1, 2, OnReceiveRealDataKhopenapictrl, VTS_BSTR VTS_BSTR VTS_BSTR)
+	ON_EVENT(KiwoomLoggerDlg, IDC_KHOPENAPICTRL1, 3, OnReceiveMsgKhopenapictrl, VTS_BSTR VTS_BSTR VTS_BSTR VTS_BSTR)
+	ON_EVENT(KiwoomLoggerDlg, IDC_KHOPENAPICTRL1, 4, OnReceiveChejanData, VTS_BSTR VTS_I4 VTS_BSTR)
+	ON_EVENT(KiwoomLoggerDlg, IDC_KHOPENAPICTRL1, 5, OnEventConnect, VTS_I4)
+	ON_EVENT(KiwoomLoggerDlg, IDC_KHOPENAPICTRL1, 7, OnReceiveRealCondition, VTS_BSTR VTS_BSTR VTS_BSTR VTS_BSTR)
+	ON_EVENT(KiwoomLoggerDlg, IDC_KHOPENAPICTRL1, 8, OnReceiveTrCondition, VTS_BSTR VTS_BSTR VTS_BSTR VTS_I2 VTS_I2)
+	ON_EVENT(KiwoomLoggerDlg, IDC_KHOPENAPICTRL1, 9, OnReceiveConditionVer, VTS_I4 VTS_BSTR)
 END_EVENTSINK_MAP()
 
 
-CKiwoomLoggerDlg::CKiwoomLoggerDlg(CWnd* pParent /*=nullptr*/)
+KiwoomLoggerDlg::KiwoomLoggerDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_KIWOOMLOGGER_DIALOG, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
-void CKiwoomLoggerDlg::DoDataExchange(CDataExchange* pDX)
+void KiwoomLoggerDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_KHOPENAPICTRL1, KWAPI);
 }
 
-BEGIN_MESSAGE_MAP(CKiwoomLoggerDlg, CDialogEx)
+BEGIN_MESSAGE_MAP(KiwoomLoggerDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 END_MESSAGE_MAP()
 
 
-BOOL CKiwoomLoggerDlg::OnInitDialog()
+BOOL KiwoomLoggerDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
@@ -108,11 +108,10 @@ BOOL CKiwoomLoggerDlg::OnInitDialog()
 
 	KWAPI.CommConnect();
 
-
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
-void CKiwoomLoggerDlg::OnSysCommand(UINT nID, LPARAM lParam)
+void KiwoomLoggerDlg::OnSysCommand(UINT nID, LPARAM lParam)
 {
 	if ((nID & 0xFFF0) == IDM_ABOUTBOX)
 	{
@@ -129,7 +128,7 @@ void CKiwoomLoggerDlg::OnSysCommand(UINT nID, LPARAM lParam)
 //  to draw the icon.  For MFC applications using the document/view model,
 //  this is automatically done for you by the framework.
 
-void CKiwoomLoggerDlg::OnPaint()
+void KiwoomLoggerDlg::OnPaint()
 {
 	if (IsIconic())
 	{
@@ -156,52 +155,53 @@ void CKiwoomLoggerDlg::OnPaint()
 
 // The system calls this function to obtain the cursor to display while the user drags
 //  the minimized window.
-HCURSOR CKiwoomLoggerDlg::OnQueryDragIcon()
+HCURSOR KiwoomLoggerDlg::OnQueryDragIcon()
 {
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
-void CKiwoomLoggerDlg::OnReceiveTrDataKhopenapictrl(LPCTSTR sScrNo, LPCTSTR sRQName, LPCTSTR sTrcode, LPCTSTR sRecordName, LPCTSTR sPrevNext, long nDataLength, LPCTSTR sErrorCode, LPCTSTR sMessage, LPCTSTR sSplmMsg)
+void KiwoomLoggerDlg::OnReceiveTrDataKhopenapictrl(LPCTSTR sScrNo, LPCTSTR sRQName, LPCTSTR sTrcode, LPCTSTR sRecordName, LPCTSTR sPrevNext, long nDataLength, LPCTSTR sErrorCode, LPCTSTR sMessage, LPCTSTR sSplmMsg)
 {
 	if (!KWAPI.GetSafeHwnd()) return;
 }
 
-void CKiwoomLoggerDlg::OnReceiveMsgKhopenapictrl(LPCTSTR sScrNo, LPCTSTR sRQName, LPCTSTR sTrCode, LPCTSTR sMsg)
+void KiwoomLoggerDlg::OnReceiveMsgKhopenapictrl(LPCTSTR sScrNo, LPCTSTR sRQName, LPCTSTR sTrCode, LPCTSTR sMsg)
 {
 	if (!KWAPI.GetSafeHwnd()) return;
 }
 
-void CKiwoomLoggerDlg::OnReceiveRealDataKhopenapictrl(LPCTSTR sJongmokCode, LPCTSTR sRealType, LPCTSTR sRealData)
+void KiwoomLoggerDlg::OnReceiveRealDataKhopenapictrl(LPCTSTR sJongmokCode, LPCTSTR sRealType, LPCTSTR sRealData)
 {
 	if (!KWAPI.GetSafeHwnd()) return;
 }
 
-void CKiwoomLoggerDlg::OnReceiveChejanData(LPCTSTR sGubun, LONG nItemCnt, LPCTSTR sFidList)
+void KiwoomLoggerDlg::OnReceiveChejanData(LPCTSTR sGubun, LONG nItemCnt, LPCTSTR sFidList)
 {
 	if (!KWAPI.GetSafeHwnd()) return;
 }
 
-void CKiwoomLoggerDlg::OnReceiveRealCondition(LPCTSTR strCode, LPCTSTR strType, LPCTSTR strConditionName, LPCTSTR strConditionIndex)
+void KiwoomLoggerDlg::OnReceiveRealCondition(LPCTSTR strCode, LPCTSTR strType, LPCTSTR strConditionName, LPCTSTR strConditionIndex)
 {
 	if (!KWAPI.GetSafeHwnd()) return;
 }
 
-void CKiwoomLoggerDlg::OnReceiveTrCondition(LPCTSTR sScrNo, LPCTSTR strCodeList, LPCTSTR strConditionName, int nIndex, int nNext)
+void KiwoomLoggerDlg::OnReceiveTrCondition(LPCTSTR sScrNo, LPCTSTR strCodeList, LPCTSTR strConditionName, int nIndex, int nNext)
 {
 	if (!KWAPI.GetSafeHwnd()) return;
 }
 
-void CKiwoomLoggerDlg::OnReceiveConditionVer(long lRet, LPCTSTR sMsg)
+void KiwoomLoggerDlg::OnReceiveConditionVer(long lRet, LPCTSTR sMsg)
 {
 	if (!KWAPI.GetSafeHwnd()) return;
 }
 
-void CKiwoomLoggerDlg::OnEventConnect(LONG nItemCnt)
+void KiwoomLoggerDlg::OnEventConnect(LONG nItemCnt)
 {
 	if (nItemCnt == 0)
 	{
 		// 立加 沥惑贸府
-
+		CString out;
+		KWAPI.GetCodeListByMarket(out, _T("10"));
 	}
 	else
 	{

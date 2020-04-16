@@ -4,12 +4,12 @@
 
 #include "stdafx.h"
 #include "afxdialogex.h"
-// CKiwoomLoggerDlg dialog
-class CKiwoomLoggerDlg : public CDialogEx
+
+class KiwoomLoggerDlg : public CDialogEx
 {
 // Construction
 public:
-	CKiwoomLoggerDlg(CWnd* pParent = nullptr);	// standard constructor
+	KiwoomLoggerDlg(CWnd* pParent = nullptr);	// standard constructor
 
 // Dialog Data
 #ifdef AFX_DESIGN_TIME
