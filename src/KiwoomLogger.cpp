@@ -8,6 +8,13 @@
 #define new DEBUG_NEW
 #endif
 
+// For opening console application
+#if defined(_UNICODE) || defined(UNICODE)
+#pragma comment(linker, "/entry:wWinMainCRTStartup /subsystem:console")
+#else
+#error This Application Only uses UNICODE format!
+#endif
+
 BEGIN_MESSAGE_MAP(KiwoomLoggerApp, CWinApp)
 	ON_COMMAND(ID_HELP, &CWinApp::OnHelp)
 END_MESSAGE_MAP()
