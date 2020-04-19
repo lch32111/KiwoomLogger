@@ -1,10 +1,14 @@
 #include "KiwoomLoggerDlg.hpp"
+
 #include "KiwoomLogger.hpp"
 #include "resource.h"
-#include "KLVersion.h"
+#include "KL/KLVersion.h"
+
 #include <iostream>
 #include <io.h>
 #include <fcntl.h>
+
+#include "KL/KLSystem.hpp"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -75,34 +79,15 @@ BEGIN_MESSAGE_MAP(KiwoomLoggerDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 END_MESSAGE_MAP()
 
-void RedirectIOToConsole()
-{
-	std::wcout.clear();
-	std::cout.clear();
-	std::wcerr.clear();
-	std::cerr.clear();
-	std::wcin.clear();
-	std::cin.clear();
-
-	std::wcout.imbue(std::locale("kor")); // 이것을 추가하면 된다.
-	std::wcin.imbue(std::locale("kor")); // cin은 이것을 추가
-	CString tt(_T("whothefuckareyou"));
-	std::wcout << tt.GetString() << _T('\n');
-
-	CString aa(_T("다 출력했다\n"));
-	std::wcout << aa.GetString();
-
-	CString winput;
-	std::wcin >> winput.GetBuffer(128);
-	std::wcout << _T("입력 : ") << winput.GetString() << '\n';
-}
-
 BOOL KiwoomLoggerDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
-	// Add "About..." menu item to system menu.
+	// Printinf Korean Characters to console
+	std::wcout.imbue(std::locale("kor"));
+	std::wcin.imbue(std::locale("kor"));
 
+	// Add "About..." menu item to system menu.
 	// IDM_ABOUTBOX must be in the system command range.
 	ASSERT((IDM_ABOUTBOX & 0xFFF0) == IDM_ABOUTBOX);
 	ASSERT(IDM_ABOUTBOX < 0xF000);
@@ -129,8 +114,6 @@ BOOL KiwoomLoggerDlg::OnInitDialog()
 	CString	strTitle;
 	strTitle.Format(_T("Kiwoom Logger %d.%d.%d"), KL_VERSION_MAJOR, KL_VERSION_MINOR, KL_VERSION_PATCH);
 	SetWindowText(strTitle);
-
-	RedirectIOToConsole();
 
 	KWAPI.CommConnect();
 
@@ -225,10 +208,7 @@ void KiwoomLoggerDlg::OnEventConnect(LONG nItemCnt)
 {
 	if (nItemCnt == 0)
 	{
-		// 접속 정상처리
-		CString out;
-		KWAPI.GetCodeListByMarket(out, _T("10"));
-		std::wcout << out.GetString() << _T('\n');
+		KiwoomLogger::EnterKLSystem(this, &KWAPI);
 	}
 	else
 	{
