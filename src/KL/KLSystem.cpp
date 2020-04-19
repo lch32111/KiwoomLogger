@@ -5,6 +5,8 @@
 #include "KiwoomLoggerDlg.hpp"
 #include "KW_OpenAPI.hpp"
 
+#include "KL/KLScanner.hpp"
+
 KiwoomLoggerDlg* KLDLG;
 KW_OpenAPI* KWAPI;
 
@@ -23,24 +25,16 @@ namespace KiwoomLogger
 
 	void enterInternal()
 	{
-		CString input;
-		CString tempBuffer;
+		KLScanner* scanner = new KLScanner();
+		int token = -1;
 
-		while (std::wcin >> input.GetBuffer())
+		do
 		{
-			std::wcout << _T("Input : ") << input.GetString() << _T('\n');
+			token = scanner->ScanToken();
+			if (token == -1) break;
+		} while (true);
 
-			if (input == _T("exit"))
-			{
-				INT_PTR a = 0;
-				EndDialog(KLDLG->GetSafeHwnd(), a);
-			}
-			else if (input == _T("list"))
-			{
-				KWAPI->GetCodeListByMarket(tempBuffer, _T("10"));
-				std::wcout << tempBuffer.GetString() << _T('\n');
-			}
-		}
+		delete scanner;
 	}
 }
 
