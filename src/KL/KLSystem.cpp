@@ -26,12 +26,29 @@ namespace KiwoomLogger
 	void enterInternal()
 	{
 		KLScanner* scanner = new KLScanner();
-		int token = -1;
+
+		KLToken token;
 
 		do
 		{
-			token = scanner->ScanToken();
-			if (token == -1) break;
+			int r =	scanner->ScanToken(&token);
+			if (r == 0)
+			{
+				std::wcout << token.string << _T('\n');
+				continue;
+			}
+
+			switch (token.type)
+			{
+			case KL_TOKEN_PRINT_HELP:
+			{
+				break;
+			}
+			case KL_TOKEN_EOF:
+			{
+				break;
+			}
+			}
 		} while (true);
 
 		delete scanner;
