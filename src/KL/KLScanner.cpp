@@ -6,7 +6,40 @@
 
 namespace KiwoomLogger
 {
-	KLScanner::KLScanner() {}
+	KLScanner::KLScanner() 
+	{
+		InitCommandMap();
+	}
+
+	static bool isAlpha(wchar_t ch)
+	{
+		if ((ch >= _T('a') && ch <= _T('z')) || (ch >= _T('A') && ch <= _T('Z')))
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	static bool isDigit(wchar_t ch)
+	{
+		if (ch >= _T('0') && ch <= _T('9'))
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	static bool isWhiteSpace(wchar_t c)
+	{
+		if (_T(' ') == c || _T('\t') == c || _T('\n') == c || _T('\r') == c || _T('\f') == c)
+		{
+			return true;
+		}
+
+		return false;
+	}
 
 	static void copy_token_error_message(KLTokenErrorType errType, wchar_t* dest)
 	{
@@ -15,34 +48,21 @@ namespace KiwoomLogger
 
 	// when you read unwanted character,
 	// you will put the character into this
-	wchar_t PutBack;
-	static void putback(wchar_t c)
+	wchar_t putBackCh;
+	void KLScanner::PutBack(wchar_t c)
 	{
-		PutBack = c;
-	}
-
-	static void clean_up_input()
-	{
-		// clear all until the place where a user enter new line
-		PutBack = 0;
-
-		wchar_t ch;
-		while (std::wcin.get(ch))
-		{
-			if (ch == _T('\n'))
-				return;
-		}
+		putBackCh = c;
 	}
 
 	// Get the next character from user Input
-	static wchar_t next()
+	wchar_t KLScanner::Next()
 	{
 		wchar_t c;
 
-		if (PutBack)
+		if (putBackCh)
 		{
-			c = PutBack;
-			PutBack = 0;
+			c = putBackCh;
+			putBackCh = 0;
 			return c;
 		}
 
@@ -54,31 +74,112 @@ namespace KiwoomLogger
 	// Skip past input that we don't need to deal with
 	// i.e., whitespace, newlines. Return the first
 	// character we need to deal with.
-	static wchar_t skip()
+	wchar_t KLScanner::Skip()
 	{
 		wchar_t c;
 
-		c = next();
-		while (_T(' ') == c || _T('\t') == c || _T('\n') == c || _T('\r') == c || _T('\f') == c)
+		c = Next();
+		while (isWhiteSpace(c))
 		{
-			c = next();
+			c = Next();
 		}
 		return (c);
 	}
 
+	wchar_t scannerBuffer[512] = { 0, };
+	static void putCharAddIndex(int& index, wchar_t ch) { scannerBuffer[index++] = ch; }
+
 	int KLScanner::ScanToken(KLToken* tok)
 	{
-		if (skip() != _T('K') || skip() != _T('L'))
+		wchar_t ch = Skip();
+
+		switch (ch)
 		{
-			copy_token_error_message(NOT_KL_SPECIFIED, tok->string);
-			clean_up_input();
+		case _T(','):
+			tok->tokenType = KL_TOKEN_COMMA;
+			wcscpy_s(tok->string, TokenStringSize, _T(","));
+			break;
+		case _T(':'):
+			copy_token_error_message(KL_ERR_UNVALID_TOKEN, tok->string);
+			CleanUpInput();
+			return 0;
+		case _T(';'):
+			tok->tokenType = KL_TOKEN_COMMAND_END;
+			wcscpy_s(tok->string, TokenStringSize, _T(";"));
+			break;
+		case _T('('):
+			tok->tokenType = KL_TOKEN_LEFT_PAREN;
+			wcscpy_s(tok->string, TokenStringSize, _T("("));
+			break;
+		case _T(')'):
+			tok->tokenType = KL_TOKEN_RIGHT_PAREN;
+			wcscpy_s(tok->string, TokenStringSize, _T(")"));
+			break;
+		default:
+			if (isAlpha(ch))
+			{
+				int sbufIndex = 0;
+				putCharAddIndex(sbufIndex, ch);
+
+				while (std::wcin.get(ch) && (isAlpha(ch) || isDigit(ch) || ch == _T('_')))
+					putCharAddIndex(sbufIndex, ch);
+				std::wcin.putback(ch);
+
+				scannerBuffer[sbufIndex] = _T('\0');
+
+				// KL Command Begin
+				if (wcscmp(scannerBuffer, _T("KL")) == 0)
+				{
+					tok->tokenType = KL_TOKEN_COMMAND_BEGIN;
+					wcscpy_s(tok->string, TokenStringSize, scannerBuffer);
+					break;
+				}
+				else
+				{
+					if (CommandMap.count(scannerBuffer) > 0)
+					{
+						tok->tokenType = KL_TOKEN_COMMAND;
+						tok->commandType = CommandMap[scannerBuffer];
+						wcscpy_s(tok->string, TokenStringSize, scannerBuffer);
+						break;
+					}
+					else
+					{
+						tok->tokenType = KL_TOKEN_COMMAND_IDENTIFIER;
+						wcscpy_s(tok->string, TokenStringSize, scannerBuffer);
+						break;
+					}
+				}
+			}
+
+			copy_token_error_message(KL_ERR_UNVALID_COMMAND, tok->string);
+			CleanUpInput();
 			return 0;
 		}
 
-		wchar_t ch = skip();
-
-		if(ch == _T'-')
 
 		return 1;
+	}
+
+	void KLScanner::PutBack(KLToken* tok)
+	{
+		size_t size = wcslen(tok->string);
+		while (size--)
+		{
+			std::wcin.putback(tok->string[size]);
+		}
+	}
+
+	void KLScanner::CleanUpInput()
+	{
+		// clear all until the place where a user enter new line
+		putBackCh = 0;
+
+		wchar_t ch;
+		while (std::wcin.get(ch))
+		{
+			if (ch == _T(';'))
+				return;
+		}
 	}
 }

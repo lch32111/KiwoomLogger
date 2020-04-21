@@ -30,20 +30,33 @@ Kiwoom Logger는 키움증권에서 제공하는 **OpenAPI의 부족한 명세**
 
 ## 명령어
 
-* 사용자는 Kiwoom Logger를 이용하기 위해 Console창에서 반드시 `KL` 단어를 입력하고 해야 합니다.
-* 
+* 사용자는 Kiwoom Logger를 이용하기 위해 Console창에서 반드시 `KL` 단어를 입력하고 마지막에 `;`를 입력해야 합니다. Enter key를 누르더라고 입력은 계속 받아지며, `;`를 입력하여 Enter key를 누르는 시점에 입력을 분석하여 명령을 실행합니다.
 
-| 명령어    | 설명                                                         | 예제        |
-| --------- | ------------------------------------------------------------ | ----------- |
-| KL --help | Kiwoom Logger에 대한 설명을 출력합니다. 이 표에 대한 설명과 동일합니다. | `KL --help` |
-|           |                                                              |             |
-|           |                                                              |             |
-|           |                                                              |             |
-|           |                                                              |             |
-|           |                                                              |             |
-|           |                                                              |             |
-|           |                                                              |             |
-|           |                                                              |             |
+| 명령어                | 설명                                                         | 예제                            |
+| --------------------- | ------------------------------------------------------------ | ------------------------------- |
+| KL help();            | Kiwoom Logger에 대한 설명을 출력합니다. 이 표에 대한 설명과 동일합니다. | `KL help();`                    |
+| KL exit();            | Kiwoom Logger를 종료시킵니다.                                | `KL exit();`                    |
+| KL item_add(A, B, C); | Item container에 "A", "B". "C"를 push_back 합니다. 종목 코드를 추가하여 이 아이템을 넘길 수 있습니다. Item container는 전역으로 한 개만 사용가능 합니다. | `KL item_add(035789, 0244589);` |
+| KL item_clear();      | item container에 있는 모든 element들을 제거합니다.           | `KL item_clear();`              |
+| KL item_print();      | item container에 있는 모든 원소들을 출력합니다.              | `KL item_print();`              |
+|                       |                                                              |                                 |
+|                       |                                                              |                                 |
+|                       |                                                              |                                 |
+|                       |                                                              |                                 |
+|                       |                                                              |                                 |
+
+* `KL` 한 번 입력한 후, 여러개의 명령어를 동시에 입력할 수 있습니다.
+
+```c
+:KL help item_add(hello, world) item_print() 
+    item_add(new_world) item_print();
+hello
+world
+hello
+world
+new_world
+:
+```
 
 
 

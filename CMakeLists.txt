@@ -36,12 +36,14 @@ set (KL_HEADER_FILE
 	include/KL/KLVersion.h
 	include/KL/KLSystem.hpp
 	include/KL/KLScanner.hpp
+	include/KL/KLTokenType.hpp
 )
 list(APPEND TOTAL_FILE ${KL_HEADER_FILE})
 
 set(KL_SOURCE_FILE
 	src/KL/KLSystem.cpp
 	src/KL/KLScanner.cpp
+	src/KL/KLTokenType.cpp
 )
 list(APPEND TOTAL_FILE ${KL_SOURCE_FILE})
 
