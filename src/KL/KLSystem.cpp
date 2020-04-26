@@ -6,6 +6,7 @@
 #include "KW_OpenAPI.hpp"
 
 #include "KL/KLScanner.hpp"
+#include "KL/KLParser.hpp"
 
 KiwoomLoggerDlg* KLDLG;
 KW_OpenAPI* KWAPI;
@@ -94,6 +95,7 @@ namespace KiwoomLogger
 	void enterInternal()
 	{
 		KLScanner* scanner = new KLScanner();
+		KLParser* parser = new KLParser(scanner);
 		KLToken token;
 		int r = 0;
 		auto scanAndPrintErr = [&r, scanner, &token]
@@ -105,6 +107,10 @@ namespace KiwoomLogger
 		auto printTokenErrMsg = [](KLTokenErrorType err)
 		{
 			std::wcout << TokenErrorMessages[(int)err] << _T('\n');
+		};
+		auto printCommandErrMsg = [](KLCommandErrorType err)
+		{
+			std::wcout << CommandErrorMessae[(int)err] << _T('\n');
 		};
 		auto isNonParamFunc = [&scanAndPrintErr, &printTokenErrMsg](const KLToken& token, bool& isError, KLTokenErrorType err) -> bool
 		{
@@ -121,21 +127,24 @@ namespace KiwoomLogger
 			return !isError;
 		};
 
+		const int parseBufferLen = 512;
+		wchar_t parseErrBuffer[parseBufferLen] = { 0, };
 		do
 		{
 			commandBuffer.clear();
 
 			std::wcout << _T(':'); // Prompt
 			scanAndPrintErr();
-			if (token.tokenType != KL_TOKEN_COMMAND_BEGIN)
-			{
-				printTokenErrMsg(KL_ERR_UNVALID_COMMAND_START);
+			if (token.tokenType != KL_TOKEN_COMMAND && token.commandType == KL_CT_START)
+			 {
+				printCommandErrMsg(KL_ERR_UNVALID_COMMAND_START);
 				continue;
 			}
 
 			// After Command Begin
+			/*
 			bool isError = false;
-			while ((r = scanner->ScanToken(&token)) && token.tokenType != KL_TOKEN_COMMAND_END)
+			while ((r = scanner->ScanToken(&token)) && token.tokenType != KL_CT_ITEM_PRINT)
 			{
 				isError = false;
 
@@ -198,10 +207,19 @@ namespace KiwoomLogger
 				std::wcout << "ERROR : " << token.string << _T('\n');
 				continue;
 			}
+			*/
 
-			if (token.tokenType != KL_TOKEN_COMMAND_END)
+			KLASTnode* astTree = parser->Parse(parseErrBuffer, parseBufferLen);
+			if (!astTree)
 			{
-				printTokenErrMsg(KL_ERR_UNVALID_COMMAND_END);
+				std::wcout << parseErrBuffer << _T('\n');
+				continue;
+			}
+
+			scanAndPrintErr();
+			if (token.tokenType != KL_TOKEN_SEMICOLON)
+			{
+				printCommandErrMsg(KL_ERR_UNVALID_COMMAND_END);
 				continue;
 			}
 			
@@ -210,8 +228,8 @@ namespace KiwoomLogger
 
 		} while (isKLRun);
 
+		delete parser;
 		delete scanner;
-
 		KLDLG->EndDialog(IDCANCEL);
 	}
 

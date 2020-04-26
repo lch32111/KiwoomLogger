@@ -16,7 +16,6 @@ namespace KiwoomLogger
 		// string member of Token will be filled 
 		// with the error, when token is invalid
 		int ScanToken(KLToken* tok);
-		void PutBack(KLToken* tok);
 		void CleanUpInput();
 
 		// per-character functions

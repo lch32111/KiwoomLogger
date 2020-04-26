@@ -104,7 +104,7 @@ namespace KiwoomLogger
 			CleanUpInput();
 			return 0;
 		case _T(';'):
-			tok->tokenType = KL_TOKEN_COMMAND_END;
+			tok->tokenType = KL_TOKEN_SEMICOLON;
 			wcscpy_s(tok->string, TokenStringSize, _T(";"));
 			break;
 		case _T('('):
@@ -116,7 +116,7 @@ namespace KiwoomLogger
 			wcscpy_s(tok->string, TokenStringSize, _T(")"));
 			break;
 		default:
-			if (isAlpha(ch))
+			if (isAlpha(ch) || ch == _T('_'))
 			{
 				int sbufIndex = 0;
 				putCharAddIndex(sbufIndex, ch);
@@ -128,46 +128,22 @@ namespace KiwoomLogger
 				scannerBuffer[sbufIndex] = _T('\0');
 
 				// KL Command Begin
-				if (wcscmp(scannerBuffer, _T("KL")) == 0)
+				if (CommandMap.count(scannerBuffer) > 0)
 				{
-					tok->tokenType = KL_TOKEN_COMMAND_BEGIN;
+					tok->tokenType = KL_TOKEN_COMMAND;
+					tok->commandType = CommandMap[scannerBuffer];
 					wcscpy_s(tok->string, TokenStringSize, scannerBuffer);
 					break;
 				}
-				else
-				{
-					if (CommandMap.count(scannerBuffer) > 0)
-					{
-						tok->tokenType = KL_TOKEN_COMMAND;
-						tok->commandType = CommandMap[scannerBuffer];
-						wcscpy_s(tok->string, TokenStringSize, scannerBuffer);
-						break;
-					}
-					else
-					{
-						tok->tokenType = KL_TOKEN_COMMAND_IDENTIFIER;
-						wcscpy_s(tok->string, TokenStringSize, scannerBuffer);
-						break;
-					}
-				}
 			}
 
-			copy_token_error_message(KL_ERR_UNVALID_COMMAND, tok->string);
+			copy_token_error_message(KL_ERR_UNVALID_TOKEN, tok->string);
 			CleanUpInput();
 			return 0;
 		}
 
 
 		return 1;
-	}
-
-	void KLScanner::PutBack(KLToken* tok)
-	{
-		size_t size = wcslen(tok->string);
-		while (size--)
-		{
-			std::wcin.putback(tok->string[size]);
-		}
 	}
 
 	void KLScanner::CleanUpInput()

@@ -12,8 +12,6 @@ namespace KiwoomLogger
 		KL_TOKEN_COMMA,
 		KL_TOKEN_COLON,
 		KL_TOKEN_SEMICOLON,
-		KL_TOKEN_COMMAND_END = KL_TOKEN_SEMICOLON,
-		KL_TOKEN_COMMAND_BEGIN,
 		KL_TOKEN_COMMAND,
 		KL_TOKEN_COMMAND_IDENTIFIER,
 		KL_TOKEN_LEFT_PAREN,
@@ -23,6 +21,7 @@ namespace KiwoomLogger
 
 	enum KLCommandType
 	{
+		KL_CT_START,
 		KL_CT_EXIT,
 		KL_CT_ITEM_ADD,
 		KL_CT_ITEM_CLEAR,
@@ -31,6 +30,7 @@ namespace KiwoomLogger
 	};
 	static const wchar_t* CommandStr[] = 
 	{
+		L"KL",
 		L"exit",
 		L"item_add",
 		L"item_clear",
@@ -48,28 +48,37 @@ namespace KiwoomLogger
 
 	enum KLTokenErrorType
 	{
+		KL_ERR_UNVALID_TOKEN,
+		KL_ERR_TOKEN_NONE
+	};
+	static const wchar_t* TokenErrorMessages[] =
+	{
+		L"유효하지 않은 토큰입니다",
+	};
+	static_assert(sizeof(TokenErrorMessages) / sizeof(wchar_t*) == KL_ERR_TOKEN_NONE, "Wrong Setting for Token Error Type");
+
+	enum KLCommandErrorType
+	{
 		KL_ERR_UNVALID_COMMAND_START,
 		KL_ERR_UNVALID_COMMAND_END,
-		KL_ERR_UNVALID_TOKEN,
 		KL_ERR_UNVALID_COMMAND,
 		KL_ERR_UNVALID_COMMAND_ITEM_ADD,
 		KL_ERR_UNVALID_COMMAND_ITEM_CLEAR,
 		KL_ERR_UNVALID_COMMAND_ITEM_PRINT,
 		KL_ERR_UNVALID_COMMAND_EXIT,
-		KL_ERR_NONE
+		KL_ERR_COMMAND_NONE
 	};
-	static const wchar_t* TokenErrorMessages[] =
+	static const wchar_t* CommandErrorMessae[] =
 	{
 		L"명령 앞에 KL를 명시하세요",
 		L"명령 끝에 ';'를 명시하세요",
-		L"유효하지 않은 토큰입니다",
 		L"유효하지 않은 명령어입니다",
 		L"유효하지 않은 item_add 명령어 입니다",
 		L"유효하지 않은 item_clear 명령어 입니다",
 		L"유효하지 않은 item_print 명령어 입니다",
 		L"유효하지 않은 exit 명령어 입니다"
 	};
-	static_assert(sizeof(TokenErrorMessages) / sizeof(wchar_t*) == KL_ERR_NONE, "Wrong Setting for Identifier enum and strings");
+	static_assert(sizeof(CommandErrorMessae) / sizeof(wchar_t*) == KL_ERR_COMMAND_NONE, "Wrong Setting for KLCommandErrorType");
 
 	// You should std::wstring for hash
 	// const wchar_t* only use the pointer hash
